@@ -8,7 +8,7 @@ import { updateTokensUsed } from '@utils/updateTokensUsed';
 
 const _contentGeneratingPlaceholder = '_AI model response requested..._';
 
-const useSubmit = () => 
+const useSubmit = () =>
 {
   const setError          = useStore((state) => state.setError);
   const setGenerating     = useStore((state) => state.setGenerating);
@@ -31,7 +31,7 @@ const useSubmit = () =>
     let _currentChatIndex: number;
     let _currentMessageIndex: number;
 
-    const addAssistantContent = (content: string) => 
+    const addAssistantContent = (content: string) =>
     {
       const updatedChats: ChatInterface[] = useStore.getState().chats || [];
 
@@ -39,7 +39,7 @@ const useSubmit = () =>
 
       //Removing "Generating..." placeholder
       if (updatedMessages[_currentMessageIndex].content == _contentGeneratingPlaceholder)
-        updatedMessages[_currentMessageIndex].content = ''; 
+        updatedMessages[_currentMessageIndex].content = '';
 
       updatedMessages[_currentMessageIndex].content += content;
       setChats(updatedChats);
@@ -98,15 +98,15 @@ const useSubmit = () =>
 
       /* Some models (OpenAI o-1) do not support System Prompt, will replace it with User Message*/
       if (!supportedModels[currChats[currentChatIndex].config.model].use_system_prompt) {
-        inputMessagesLimited = inputMessagesLimited.map(message => 
+        inputMessagesLimited = inputMessagesLimited.map(message =>
           message.role === 'system' ? { ...message, role: 'user' } : message
         );
       }
 
       const completionsConfig: OpenAICompletionsConfig = {
         //NOTE: this is API-specific model alias, not our internal model reference
-        model: supportedModels[currChats[currentChatIndex].config.model].apiAliasCurrent, 
-        
+        model: supportedModels[currChats[currentChatIndex].config.model].apiAliasCurrent,
+
         max_completion_tokens: currChats[currentChatIndex].config.maxGenerationTokens,
         temperature: supportedModels[currChats[currentChatIndex].config.model].force_temperature ?? currChats[currentChatIndex].config.temperature,
         presence_penalty: supportedModels[currChats[currentChatIndex].config.model].force_presence_penalty ?? currChats[currentChatIndex].config.presence_penalty,
@@ -114,8 +114,8 @@ const useSubmit = () =>
         frequency_penalty: supportedModels[currChats[currentChatIndex].config.model].force_frequency_penalty ?? currChats[currentChatIndex].config.frequency_penalty
       };
 
-      const headers = await prepareApiHeaders(currChats[currentChatIndex].config.model, inputMessagesLimited, 'Chat Submission');    
-      
+      const headers = await prepareApiHeaders(currChats[currentChatIndex].config.model, inputMessagesLimited, 'Chat Submission');
+
       /* Streaming Mode */
       if (supportedModels[currChats[currentChatIndex].config.model].use_stream) {
 
@@ -126,7 +126,7 @@ const useSubmit = () =>
           headers.headers
         );
 
-        if (headers && stream)    
+        if (headers && stream)
           await handleStream(stream, addAssistantContent);
 
         if (countTotalTokens) {
@@ -134,16 +134,16 @@ const useSubmit = () =>
 
           const currChatsMessages = JSON.parse(JSON.stringify(useStore.getState().chats))[currentChatIndex].messages;
 
-          const newPromptTokens = countTokens(inputMessagesLimited, 
+          const newPromptTokens = countTokens(inputMessagesLimited,
               currChats[currentChatIndex].config.model, true);
 
-          const newCompletionTokens = countTokens([currChatsMessages[currChatsMessages.length - 1]], 
+          const newCompletionTokens = countTokens([currChatsMessages[currChatsMessages.length - 1]],
               currChats[currentChatIndex].config.model, false);
 
           updateTokensUsed(currChats[currentChatIndex].config.model, newPromptTokens, newCompletionTokens, true);
         }
 
-      } 
+      }
 
       /* Batch Mode */
       else {
@@ -167,8 +167,8 @@ const useSubmit = () =>
             console.log ("Tokens Usage: " + JSON.stringify (response.usage))
 
             updateTokensUsed(currChats[currentChatIndex].config.model,
-                    response.usage.prompt_tokens, 
-                    response.usage.completion_tokens + (response.usage.reasoning_tokens ?? 0), 
+                    response.usage.prompt_tokens,
+                    response.usage.completion_tokens + (response.usage.reasoning_tokens ?? 0),
                     true);
 
           } else {
@@ -176,19 +176,19 @@ const useSubmit = () =>
 
             const currChatsMessages = JSON.parse(JSON.stringify(useStore.getState().chats))[currentChatIndex].messages;
 
-            const newPromptTokens = countTokens(inputMessagesLimited, 
+            const newPromptTokens = countTokens(inputMessagesLimited,
               currChats[currentChatIndex].config.model, true);
 
-            const newCompletionTokens = countTokens([currChatsMessages[currChatsMessages.length - 1]], 
+            const newCompletionTokens = countTokens([currChatsMessages[currChatsMessages.length - 1]],
                 currChats[currentChatIndex].config.model, false);
 
-            updateTokensUsed(currChats[currentChatIndex].config.model, 
-              newPromptTokens, 
+            updateTokensUsed(currChats[currentChatIndex].config.model,
+              newPromptTokens,
               newCompletionTokens,
               true);
         }
       }
-      
+
     } catch (e: unknown) {
           const err = (e as Error).message;
           console.log(err);

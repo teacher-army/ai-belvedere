@@ -21,7 +21,7 @@ export const redirectToLogin = async() => {
 
   /* Prepare API Request Headers */
 export const prepareApiHeaders = async (
-    model: ModelOptions, 
+    model: ModelOptions,
     messages: MessageInterface[],
     purpose: string) => {
 
@@ -32,7 +32,7 @@ export const prepareApiHeaders = async (
   headers['x-model-provider'] = supportedModels[model].modelProvider;
 
   /* Built-in endpoint (/api/v1/chat/completions) */
-  if (apiEndpoint === _builtinAPIEndpoint && 
+  if (apiEndpoint === _builtinAPIEndpoint &&
       (import.meta.env.VITE_CHECK_AAD_AUTH === 'Y' || import.meta.env.AUTH_AUTH0 === 'Y'))
   {
     const isAuthenticatedUser = await isAuthenticated();
@@ -153,26 +153,24 @@ export async function handleStream(stream: ReadableStream, addAssistantContent: 
   if (stream) {
     if (stream.locked)
       throw new Error('Oops, the stream is locked right now. Please try again');
-    
+
     const reader = stream.getReader();
 
     let reading = true;
 
     /* This is our own simplified implementation of a response stream (provider-agnostic) */
     /* See back-end chat_completions.js implementation */
-    
+
 
     try {
       while (reading && useStore.getState().generating) {
         const { done, value } = await reader.read();
-       
+
         if (done) {
           reading = false;
         } else {
           const decodedValue = new TextDecoder().decode(value);
           const lines = decodedValue.split('\n');
-
-          let buffer = '';
 
           for (const line of lines) {
             if (line.startsWith('data:')) {
@@ -185,9 +183,8 @@ export async function handleStream(stream: ReadableStream, addAssistantContent: 
               if (data === '[DONE]') {
                 reading = false;
               } else {
-                buffer += data;
                 try {
-                  const content = JSON.parse(buffer)?.content;
+                  const content = JSON.parse(data)?.choices[0].delta.content
 
                   if (content) {
                     addAssistantContent(content);
@@ -196,10 +193,8 @@ export async function handleStream(stream: ReadableStream, addAssistantContent: 
                   else {
                     //console.debug('handleStream: chunk content is empty ', content);
                   }
-                  buffer = '';
-                 
                 } catch (error) {
-                  //console.debug('handleStream: received an incomplete JSON. Line buffered: ', buffer);
+                  // console.debug('handleStream: received an incomplete JSON. Line buffered: ', data);
                 }
               }
             }
@@ -211,7 +206,7 @@ export async function handleStream(stream: ReadableStream, addAssistantContent: 
       // Handle the error and provide appropriate feedback to the client
       addAssistantContent('\n***ERROR*** An error occurred during stream processing. Please try again.');
     } finally {
-      
+
       if (!useStore.getState().generating) {
         reader.cancel('Stream cancelled by user');
         console.debug('Stream cancelled by user');
@@ -221,7 +216,7 @@ export async function handleStream(stream: ReadableStream, addAssistantContent: 
       }
 
       reader.releaseLock();
-      
+
       try {
         await stream.cancel();
       } catch (error) {
