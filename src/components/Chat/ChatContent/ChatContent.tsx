@@ -14,7 +14,7 @@ import TokensToast from '@components/Toast/TokensToast';
 interface ChatContentProps {
   chatDownloadAreaRef: RefObject<HTMLDivElement>;
 }
-  
+
 const ChatContent = ({ chatDownloadAreaRef }: ChatContentProps) =>  {
   const inputRole = useStore((state) => state.inputRole);
   const setError = useStore((state) => state.setError);
@@ -73,7 +73,7 @@ const ChatContent = ({ chatDownloadAreaRef }: ChatContentProps) =>  {
 
   return (
     <div className='flex-1 overflow-hidden'>
-      <ChatHeader />
+      {/*<ChatHeader />*/}
       <ScrollToBottom
         className='h-full pt-16 dark:bg-gray-800'
         followButtonClassName='hidden'
@@ -106,7 +106,7 @@ const ChatContent = ({ chatDownloadAreaRef }: ChatContentProps) =>  {
               messageIndex={stickyIndex}
               sticky
             />)}
-         
+
           {!chatExists && (
             <div className="relative flex mt-10 text-xl text-gray-600 dark:text-gray-300 break-words">You have no active chats. Please use the the New Chat button.</div>
             )}
@@ -159,13 +159,13 @@ const ChatContent = ({ chatDownloadAreaRef }: ChatContentProps) =>  {
                     <>
                       {
                       //For debugging only - not needed
-                      /* <div className="flex w-full justify-center items-center align-center"> 
+                      /* <div className="flex w-full justify-center items-center align-center">
                           Chat Drafts: {JSON.stringify(chatDrafts, undefined, 4)}
-                      </div> 
-                      <div className="flex w-full justify-center items-center align-center"> 
+                      </div>
+                      <div className="flex w-full justify-center items-center align-center">
                           New Message Bufer: "{newMessageDraftBuffer}" (for chatId: {newMessageDraftChatIndex})
                       </div> */}
-                    </> 
+                    </>
                     }
                   </>
                 }

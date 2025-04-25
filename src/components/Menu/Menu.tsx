@@ -43,12 +43,12 @@ const Menu = React.memo(({chatDownloadAreaRef}: {chatDownloadAreaRef: React.RefO
             <div className='flex justify-between w-full'>
               <NewChat hotkeysEnabled={true}/>
               <div className='flex gap-2'>
-                <CloneChat /> 
+                <CloneChat />
                 <NewFolder />
               </div>
             </div>
             <ChatHistoryList chatDownloadAreaRef={chatDownloadAreaRef}/>
-            <MenuOptions />
+            {/*<MenuOptions />*/}
           </nav>
         </div>
 
