@@ -13,7 +13,7 @@ const NewChat = ({ folder, hotkeysEnabled }: { folder?: string; hotkeysEnabled: 
   const generating = useStore((state) => state.generating);
   const [isModelSelectionOpen, setIsModelSelectionOpen] = useState(false);
   const [confirmationModel, setConfirmationModel] = useState<ModelOptions | null>(null);
-  const addChat = useAddChat(); 
+  const addChat = useAddChat();
 
   const defaultModel = useStore((state) => state.defaultChatConfig.model);
 
@@ -85,7 +85,7 @@ const NewChat = ({ folder, hotkeysEnabled }: { folder?: string; hotkeysEnabled: 
         </button>
       </div>
     );
-  };  
+  };
 
   const ModelCell = ({ model, backgroundColor }: { model: ModelOptions; backgroundColor?: string }) => {
     const modelDetails = supportedModels[model];
@@ -99,7 +99,7 @@ const NewChat = ({ folder, hotkeysEnabled }: { folder?: string; hotkeysEnabled: 
       </div>
     );
   };
-  
+
   const ModelGroup = ({ models }: { models: (ModelOptions | null)[] }) => {
     if (models.length === 1 && models[0]) {
       return <ModelCell model={models[0]} backgroundColor={supportedModels[models[0]].choiceButtonColor} />;
@@ -117,7 +117,7 @@ const NewChat = ({ folder, hotkeysEnabled }: { folder?: string; hotkeysEnabled: 
     }
     return null;
   };
-  
+
   const ModelRow = ({ models }: { models: (ModelOptions | null)[][] }) => (
     <>
       {models.map((modelGroup, index) => (
@@ -134,9 +134,7 @@ const NewChat = ({ folder, hotkeysEnabled }: { folder?: string; hotkeysEnabled: 
         className={`flex items-center rounded-md hover:bg-gray-500/10 transition-all duration-200 text-white text-sm flex-shrink-0 ${
           generating ? 'cursor-not-allowed opacity-40' : 'cursor-pointer opacity-100'
         } ${folder ? 'justify-start' : 'py-2 px-2 gap-3 mb-2 border border-white/20'}`}
-        onClick={() => {
-          if (!generating) setIsModelSelectionOpen(true);
-        }}
+        onClick={() => handleModelSelect(`gpt-4o-mini`)}
         title={folder ? t('main:newChat') || 'New Chat' : t('main:newChatHotkey') || 'Hotkey: Ctrl + /'}
       >
         {folder ? (
@@ -211,9 +209,9 @@ const NewChat = ({ folder, hotkeysEnabled }: { folder?: string; hotkeysEnabled: 
           cancelButton={false}
         >
           <div className='p-4 text-left'>
-            <p 
+            <p
               className='[&_br]:content-[""] [&_br]:block [&_br]:mb-2 text-gray-800 dark:text-gray-200'
-              dangerouslySetInnerHTML={{ __html: supportedModels[confirmationModel].choiceConfirmationPrompt ?? '' }} 
+              dangerouslySetInnerHTML={{ __html: supportedModels[confirmationModel].choiceConfirmationPrompt ?? '' }}
             />
             <div className='mt-4 flex justify-center space-x-4'>
               <button
