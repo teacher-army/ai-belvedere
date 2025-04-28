@@ -19,7 +19,7 @@ const ChatHeader = React.memo(() => {
         : undefined,
     shallow
   );
-  
+
   const setChats = useStore((state) => state.setChats);
   const currentChatIndex = useStore((state) => state.currentChatIndex);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -78,5 +78,6 @@ const ChatHeader = React.memo(() => {
     <></>
   );
 });
+ChatHeader.displayName = `ChatHeader`;
 
 export default ChatHeader;
