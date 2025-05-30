@@ -75,11 +75,11 @@ const ChatContent = ({ chatDownloadAreaRef }: ChatContentProps) =>  {
     <div className='flex-1 overflow-hidden'>
       {/*<ChatHeader />*/}
       <ScrollToBottom
-        className='h-full pt-16 dark:bg-gray-800'
+        className='h-full dark:bg-gray-800'
         followButtonClassName='hidden'
       >
         <ScrollToBottomButton />
-        <div className='flex flex-col items-center text-sm dark:bg-gray-800'>
+        <div className='flex flex-col items-center text-sm dark:bg-gray-800 h-full'>
           <div
             className='flex flex-col items-center text-sm dark:bg-gray-800 w-full'
             ref={chatDownloadAreaRef}
@@ -127,17 +127,6 @@ const ChatContent = ({ chatDownloadAreaRef }: ChatContentProps) =>  {
               </div>
             </div>
           )}
-          <div
-            className={`mt-4 w-full m-auto  ${
-              hideSideMenu
-                ? 'md:max-w-5xl lg:max-w-5xl xl:max-w-6xl'
-                : 'md:max-w-3xl lg:max-w-3xl xl:max-w-4xl'
-            }`}
-          >
-
-        {/* right-0  md:w-full*/}
-          </div>
-          <div className='w-full h-36'></div>
         </div>
       </ScrollToBottom>
 

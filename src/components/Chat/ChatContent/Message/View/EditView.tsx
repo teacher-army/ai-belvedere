@@ -18,7 +18,7 @@ export function findLastUserMessageIndex(updatedMessages: MessageInterface[], me
       return i;
     }
   }
-  return -1; 
+  return -1;
 }
 
 const EditView = ({
@@ -39,7 +39,7 @@ const EditView = ({
   const currentChats = useStore((state) => state.chats);
 
   // Current input message content draft - local state
-  const [__content, __setContent] = useState<string>(content); 
+  const [__content, __setContent] = useState<string>(content);
 
   // Current input message content draft -> persist to global state (centralized buffer)
   const newMessageDraftBuffer = (useStore(state => state.newMessageDraftBuffer));
@@ -92,7 +92,7 @@ const EditView = ({
       );
 
     if (e.key === 'Enter' && !isMobile && !e.nativeEvent.isComposing) {
-  
+
       if (!e.ctrlKey && !e.shiftKey) {        // Just Enter
         if (enterToSubmit) {
           e.preventDefault(); // Prevent default to avoid newline in textarea
@@ -139,7 +139,7 @@ const EditView = ({
   const { handleSubmit } = useSubmit();
   const { validateMessages } = useValidatePreSubmit();
 
-  const handleGenerate = () => 
+  const handleGenerate = () =>
   {
     // It's a handler, so better query Store directly for the generating state
     if (useStore.getState().generating) return;
@@ -153,11 +153,11 @@ const EditView = ({
 
     let updatedMessages: MessageInterface[];
 
-    if (sticky)  // New Message box 
+    if (sticky)  // New Message box
     {
-      updatedMessages = [...updatedChats[currentChatIndex].messages, 
+      updatedMessages = [...updatedChats[currentChatIndex].messages,
                                { role: inputRole, content: __content }]; //add a message
-    } 
+    }
     else        // Edit Messsage box
     {
       updatedMessages = updatedChats[currentChatIndex].messages.slice(0, messageIndex + 1); // truncate further messages
@@ -172,12 +172,12 @@ const EditView = ({
     setChats(updatedChats);
 
     // Clear the input box
-    if (sticky) 
+    if (sticky)
     {
       _setContent('');
       resetTextAreaHeight();
-    } 
-    else 
+    }
+    else
     {
       setIsEdit(false);
     }
@@ -214,14 +214,14 @@ const EditView = ({
 
     if (!sticky){
       setIsEdit(false);
-    } else 
+    } else
     {
       _setContent('');
       resetTextAreaHeight();
     }
   };
 
-  
+
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -236,14 +236,14 @@ const EditView = ({
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, []);
-  
+
 
   useEffect(() => {
     if (sticky && textareaRef.current) {
       textareaRef.current.focus();
     }
   }, [sticky, textareaRef]);
-  
+
 
   const chats = JSON.parse(JSON.stringify(useStore.getState().chats || []));
   const messages = (currentChatIndex < chats.length) ? chats[currentChatIndex]?.messages : undefined;
@@ -273,7 +273,7 @@ const EditView = ({
         >
         </textarea>
       </div>
-      
+
       {/* Generate, Save, Cancel buttons */}
       <div className='flex'>
         <div className='flex-1 text-center mt-2 flex justify-center'>
@@ -320,7 +320,7 @@ const EditView = ({
                   {t('regenerate')}
                 </div>
               </button>
-              
+
               {/* Save Button */}
               <button
                 className={`btn relative mr-2 btn-neutral ${ generatingState ? 'cursor-not-allowed opacity-40' : ''}`}
@@ -347,13 +347,13 @@ const EditView = ({
             </button>
           )}
         </div>
-        
+
 
         {/* There was one more Tokens Counter display */}
         {/* {sticky && <TokenCount />} */}
 
         <CommandPrompt _addPromptContent={_addPromptContent} />
-        
+
 
       </div>
 
