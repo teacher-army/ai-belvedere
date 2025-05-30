@@ -8,11 +8,13 @@ await import('katex/dist/katex.min.css');
 import './i18n';
 import { isUserAuthenticated } from '@utils/getAuthenticatedUserProfile';
 
-if (typeof window !== 'undefined') {
-  const REDIRECT_URL = import.meta.env.VITE_REDIRECT_URL;
+if (import.meta.env.PROD) {
+  if (typeof window !== 'undefined') {
+    const REDIRECT_URL = import.meta.env.VITE_REDIRECT_URL;
 
-  if (window.location.href !== REDIRECT_URL) {
-    window.location.href = REDIRECT_URL;
+    if (window.location.href !== REDIRECT_URL) {
+      window.location.href = REDIRECT_URL;
+    }
   }
 }
 

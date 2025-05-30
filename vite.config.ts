@@ -2,6 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import wasm from 'vite-plugin-wasm';
 import topLevelAwait from 'vite-plugin-top-level-await';
+import { config } from 'dotenv';
+
+config();
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,4 +23,8 @@ export default defineConfig({
     },
   },
   base: './',
+  server: {
+    host: process.env.VITE_LOCAL_HOST || 'localhost',
+    port: Number(process.env.VITE_PORT) || 3000,
+  }
 });

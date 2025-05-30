@@ -35,7 +35,7 @@ const Message = React.memo(
       <div
         className={`w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group ${
           backgroundStyle[messageIndex % 2]
-        }`}
+        } ${sticky && 'mt-auto'}`}
       >
         <div
           className={`text-base gap-4 md:gap-6 m-auto p-4 md:py-6 flex transition-all ease-in-out ${
@@ -47,12 +47,12 @@ const Message = React.memo(
           <Avatar role={role} model={model}/>
           <div className='w-[calc(100%-50px)]'>
 
-          {showSystemPrompt && (role=='system') && 
-            ( 
+          {showSystemPrompt && (role=='system') &&
+            (
               // System Prompt
               <div className='prose dark:prose-invert font-bold relative'>
                 System Prompt
-              </div>  
+              </div>
             )}
 
             <MessageContent
